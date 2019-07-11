@@ -2,7 +2,7 @@ enchant();
 window.onload = function() {
     var game_ = new Game(320, 320); // 表示領域の大きさを設定
     game_.fps = 24;                 // ゲームの進行スピードを設定
-    game_.preload('./img/chara1.png', './img/start.png', './img/gameover.png','./img/bgg3.png', './img/bgg4.png', './img/hurdle.png', './img/igaguri.png', './img/bird.png'); // ゲームに使う素材を、あらかじめ読み込む
+    game_.preload('./img/chara2.png', './img/start.png', './img/gameover.png','./img/bgg7.png', './img/bgg8.png', './img/hurdle.png', './img/igaguri.png', './img/bird.png'); // ゲームに使う素材を、あらかじめ読み込む
     game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行します
         /**
         * タイトルシーン
@@ -19,7 +19,7 @@ window.onload = function() {
             startImage.y = 136;                                     // 縦位置調整
             scene.addChild(startImage);                             // シーンに追加
             // タイトルラベル設定
-            var title = new Label('くまだっしゅ（仮）');                     // ラベルを作る
+            var title = new Label('クレランナー');                     // ラベルを作る
             title.textAlign = 'center';                             // 文字を中央寄せ
             title.color = '#ffffff';                                // 文字を白色に
             title.x = 0;                                            // 横位置調整
@@ -27,7 +27,7 @@ window.onload = function() {
             title.font = '28px sans-serif';                         // 28pxのゴシック体にする
             scene.addChild(title);                                  // シーンに追加
             // サブタイトルラベル設定
-            var subTitle = new Label('- 障害物を避けよう  -');  // ラベルを作る
+            var subTitle = new Label('- クリックで障害物を避けよう  -');  // ラベルを作る
             subTitle.textAlign = 'center';                          // 文字中央寄せ
             title.x = 0;                                            // 横位置調整
             subTitle.y = 196;                                       // 縦位置調整
@@ -55,14 +55,14 @@ window.onload = function() {
 
           // スクロールする背景1の設定
           var bg1 = new Sprite(320, 320);            // スプライトを作る
-          bg1.image = game_.assets['./img/bgg3.png']; // 画像を設定
+          bg1.image = game_.assets['./img/bgg7.png']; // 画像を設定
           bg1.x = 0;                                 // 横位置調整
           bg1.y = 0;                                 // 縦位置調整
           scene.addChild(bg1);                       // シーンに追加
 
           // スクロールする背景2の設定
           var bg2 = new Sprite(320, 320);            // スプライトを作る
-          bg2.image = game_.assets['./img/bgg4.png']; // 画像を設定
+          bg2.image = game_.assets['./img/bgg8.png']; // 画像を設定
           bg2.x = 320;                               // 横位置調整 320px右に配置(bg1の右隣に隙間なく並べる)
           bg2.y = 0;                                 // 縦位置調整
           scene.addChild(bg2);                       // シーンに追加
@@ -116,7 +116,7 @@ window.onload = function() {
 
           // くまの設定
           var kuma = new Sprite(32, 32);             // スプライトを作る
-          kuma.image = game_.assets['./img/chara1.png']; // 画像を設定
+          kuma.image = game_.assets['./img/chara2.png']; // 画像を設定
           kuma.x = 80;                               // 横位置調整 画面左側に配置
           kuma.y = GROUND_LINE - kuma.height;        // 縦位置調整 くまの下端を地面の高さに合わせる
           scene.addChild(kuma);                      // シーンに追加
@@ -276,10 +276,16 @@ window.onload = function() {
             // くまのフレームを0, 1, 2, 0, 1, 2…… と繰り返します
             // 正確には0, 1, 2, 1, 0, 1, 2, 1, 0, 1…… ですが、
             // 0, 1, 2, 0, 1, 2…… でも十分走っているように見えるため、良いものとします
-            kuma.frame ++;
-            if (kuma.frame > 2) {
-              kuma.frame = 0;
+            if(xx % 3 == 1){
+              kuma.frame ++;
+              if (kuma.frame > 2) {
+                kuma.frame = 0;
+              }
+              xx++;
+            }else{
+              xx++;
             }
+
 
             // 背景をスクロールさせる
             bg1.x -= SCROLL_SPEED;                // 背景1をスクロール
