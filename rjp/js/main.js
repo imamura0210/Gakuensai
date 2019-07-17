@@ -62,7 +62,7 @@ window.onload = function() {
     */
     var createGameScene = function() {
         var GROUND_LINE = 250;                                 // 地平線の高さ（固定）
-        var SCROLL_SPEED = 5;  　　　　　　　　　　　　　　　　　 // スクロールの速さ
+        var SCROLL_SPEED = 10  　　　　　　　　　　　　　　　　　 // スクロールの速さ
         var scene = new Scene();                           　　// 新しいシーンを作る
         var scroll = 0; 　　　　　　　　　　　　　　　　　　　　  // スクロール量を記録する変数
         scene.backgroundColor = '#8cc820';
@@ -102,6 +102,13 @@ window.onload = function() {
         hurdleB.y = (GROUND_LINE - hurdleB.height) * 1.1;
         scene.addChild(hurdleB);
 
+        // ハードルの設定3
+        var hurdleC = new Sprite(50, 75);
+        hurdleC.image = game_.assets['./img/hurdle.png'];
+        hurdleC.x = -hurdleC.width;                  //画面外に隠しておく
+        hurdleC.y = (GROUND_LINE - hurdleC.height) * 1.1;
+        scene.addChild(hurdleC);
+
         // ミニハードルの設定
         var miniHurdleA = new Sprite(45, 35);
         miniHurdleA.image = game_.assets['./img/minihurdle.png'];
@@ -124,11 +131,25 @@ window.onload = function() {
         scene.addChild(miniHurdleC);
 
         // 鳥の設定
-        var bird = new Sprite(64, 32);
-        bird.image = game_.assets['./img/bird.png'];
-        bird.x = -bird.width;
-        bird.y = 150;
-        scene.addChild(bird);
+        var bird1 = new Sprite(64, 32);
+        bird1.image = game_.assets['./img/bird.png'];
+        bird1.x = -bird1.width;
+        bird1.y = 150;
+        scene.addChild(bird1);
+
+        // 鳥の設定2
+        var bird2 = new Sprite(64, 32);
+        bird2.image = game_.assets['./img/bird.png'];
+        bird2.x = -bird1.width;
+        bird2.y = 150;
+        scene.addChild(bird2);
+
+        // 鳥の設定3
+        var bird3 = new Sprite(64, 32);
+        bird3.image = game_.assets['./img/bird.png'];
+        bird3.x = -bird3.width;
+        bird3.y = 190;
+        scene.addChild(bird3);
 
         // くれの設定
         var Kure = new Sprite(32, 32);
@@ -149,12 +170,13 @@ window.onload = function() {
         }
 
         //障害物が複数出現する際の処理に使用するフラグ
-        var igaFlag = 0;
+        var miniFlag = 0;
         var hurFlag = 0;
+        var birFlag = 0;
 
         // シーンに毎フレームイベントを設定
         scene.addEventListener(Event.ENTER_FRAME, function() {
-          scroll += SCROLL_SPEED / 5;
+          scroll += SCROLL_SPEED / 10;
           scoreLabel.text = 'SCORE:'+scroll.toString(); // スコア表示を更新
 
           // 当たり判定用スプライトをくれの上下中心に置く
@@ -165,75 +187,115 @@ window.onload = function() {
           //分岐処理で難易度調整
           if(scroll < 500){
             if(scroll % 40 === 0 && scroll % 120 != 0){
-              if(igaFlag === 0){
+              if(miniFlag === 0){
                 miniHurdleA.x = 320;
-                igaFlag++;
-              } else if(igaFlag === 1){
+                miniFlag++;
+              } else if(miniFlag === 1){
                 miniHurdleB.x = 320;
-                igaFlag++;
+                miniFlag++;
               } else {
                 miniHurdleC.x = 320;
-                igaFlag = 0;
+                miniFlag = 0;
               }
-            }
+              }
             if(scroll % 120 === 0){
               if(hurFlag === 0){
                 hurdleA.x = 320;
                 hurFlag++;
-              } else {
+              } else if(hurFlag == 1){
                 hurdleB.x = 320;
-                hurFlag--;
+                hurFlag++;
+              } else {
+                hurdleC.x = 320;
+                hurFlag = 0;
               }
             }
           } else if(scroll >= 500 && scroll < 1000){
-            if(scroll % 40 === 0 && scroll % 80 != 0 && scroll % 150 != 0){
-              if(igaFlag === 0){
+            if(scroll % 40 === 0 && scroll % 80 != 0 && scroll % 120 != 0 && scroll % 160 != 0){
+              if(miniFlag === 0){
                 miniHurdleA.x = 320;
-                igaFlag++;
-              } else if(igaFlag === 1){
+                miniFlag++;
+              } else if(miniFlag === 1){
                 miniHurdleB.x = 320;
-                igaFlag++;
+                miniFlag++;
               } else {
                 miniHurdleC.x = 320;
-                igaFlag = 0;
+                miniFlag = 0;
               }
             }
-            if(scroll % 80 === 0 && scroll % 150 != 0){
+            if((scroll % 80 === 0 || scroll % 120 === 0) && scroll % 160 != 0){
               if(hurFlag === 0){
                 hurdleA.x = 320;
                 hurFlag++;
-              } else {
+              } else if(hurFlag === 1){
                 hurdleB.x = 320;
-                hurFlag--;
+                hurFlag++;
+              } else {
+                hurdleC.x = 320;
+                hurFlag = 0;
               }
             }
-            if(scroll % 150 === 0){
-              bird.x = 320;
+            if(scroll % 160 === 0){
+              if(birFlag === 0){
+                bird1.x = 320;
+                birFlag++;
+              }else{
+                bird2.x = 320;
+                birFlag--;
+              }
             }
-          } else if(scroll >= 1000){
-            if(scroll % 20 === 0 && scroll % 60 != 0 && scroll % 80 != 0){
-              if(igaFlag === 0){
+          } else if(scroll >= 1000 && scroll < 1500){
+            if(scroll % 30 === 0 && scroll % 90 != 0 && scroll % 120 != 0){
+              if(miniFlag === 0){
                 miniHurdleA.x = 320;
-                igaFlag++;
-              } else if(igaFlag === 1){
+                miniFlag++;
+              } else if(miniFlag === 1){
                 miniHurdleB.x = 320;
-                igaFlag++;
+                miniFlag++;
               } else {
                 miniHurdleC.x = 320;
-                igaFlag = 0;
+                miniFlag = 0;
               }
             }
-            if(scroll % 60 === 0 && scroll % 80 != 0){
+            if(scroll % 90 === 0 && scroll % 120 != 0){
               if(hurFlag === 0){
                 hurdleA.x = 320;
                 hurFlag++;
-              } else {
+              } else if(hurFlag === 1){
                 hurdleB.x = 320;
-                hurFlag--;
+                hurFlag++;
+              } else {
+                hurdleC.x = 320;
+                hurFlag = 0;
               }
             }
-            if(scroll % 80 === 0){
-              bird.x = 320;
+            if(scroll % 120 === 0){
+              if(birFlag === 0){
+                bird1.x = 320;
+                birFlag++;
+              }else{
+                bird2.x = 320;
+                birFlag--;
+              }
+            }
+          }else if(scroll >= 1500){
+            if(scroll % 30 === 0 && scroll % 90 != 0 && scroll % 120 != 0){
+              if(hurFlag === 0){
+                hurdleA.x = 320;
+                hurFlag++;
+              } else if(hurFlag === 1){
+                hurdleB.x = 320;
+                hurFlag++;
+              } else {
+                hurdleC.x = 320;
+                hurFlag = 0;
+              }
+            }
+            if(scroll % 90 === 0 && scroll % 120 != 0){
+              bird1.x = 320;
+            }
+            if(scroll % 120 === 0){
+              bird3.x = 320;
             }
           }
 
@@ -248,6 +310,12 @@ window.onload = function() {
           if (hurdleB.x > -hurdleB.width) {       // ハードルが出現している（画面内にある）とき
             hurdleB.x -= SCROLL_SPEED;         // ハードルをスクロール
             if (hurdleB.intersect(Kure_hit)) { // ハードルとくれがぶつかったとき
+              KureDead();                   // くれがやられた関数を実行
+            }
+          }
+          if (hurdleC.x > -hurdleC.width) {       // ハードルが出現している（画面内にある）とき
+            hurdleC.x -= SCROLL_SPEED;         // ハードルをスクロール
+            if (hurdleC.intersect(Kure_hit)) { // ハードルとくれがぶつかったとき
               KureDead();                   // くれがやられた関数を実行
             }
           }
@@ -269,17 +337,45 @@ window.onload = function() {
               KureDead();                   // くれがやられた関数を実行
             }
           }
-          if (bird.x > -bird.width) {           // 鳥が出現している（画面内にある）とき
-            bird.x -= SCROLL_SPEED * 1.2;     // 鳥を1.2倍速でスクロール
+          if (bird1.x > -bird1.width) {           // 鳥が出現している（画面内にある）とき
+            bird1.x -= SCROLL_SPEED * 1.2;     // 鳥を1.2倍速でスクロール
             if(scroll % 10 === 0){
-              if (bird.frame > 0) {             // 鳥のフレーム番号を0, 1, 0, 1と切り替えて羽ばたかせる
-                bird.frame = 0;
+              if (bird1.frame > 0) {             // 鳥のフレーム番号を0, 1, 0, 1と切り替えて羽ばたかせる
+                bird1.frame = 0;
               } else {
-                bird.frame = 1;
+                bird1.frame = 1;
               }
             }
 
-            if (bird.intersect(Kure_hit)) {   // 鳥とくれがぶつかったとき
+            if (bird1.intersect(Kure_hit)) {   // 鳥とくれがぶつかったとき
+              KureDead();                   // くれがやられた関数を実行
+            }
+          }
+          if (bird2.x > -bird2.width) {           // 鳥が出現している（画面内にある）とき
+            bird2.x -= SCROLL_SPEED * 1.2;     // 鳥を1.2倍速でスクロール
+            if(scroll % 10 === 0){
+              if (bird2.frame > 0) {             // 鳥のフレーム番号を0, 1, 0, 1と切り替えて羽ばたかせる
+                bird2.frame = 0;
+              } else {
+                bird2.frame = 1;
+              }
+            }
+
+            if (bird2.intersect(Kure_hit)) {   // 鳥とくれがぶつかったとき
+              KureDead();                   // くれがやられた関数を実行
+            }
+          }
+          if (bird3.x > -bird3.width) {           // 鳥が出現している（画面内にある）とき
+            bird3.x -= SCROLL_SPEED * 1.2;     // 鳥を1.2倍速でスクロール
+            if(scroll % 10 === 0){
+              if (bird3.frame > 0) {             // 鳥のフレーム番号を0, 1, 0, 1と切り替えて羽ばたかせる
+                bird3.frame = 0;
+              } else {
+                bird3.frame = 1;
+              }
+            }
+
+            if (bird3.intersect(Kure_hit)) {   // 鳥とくれがぶつかったとき
               KureDead();                   // くれがやられた関数を実行
             }
           }
@@ -306,8 +402,8 @@ window.onload = function() {
         // シーンにタッチイベントを追加
         scene.addEventListener(Event.TOUCH_START, function(e){
           // くれをジャンプさせる
-          Kure.tl.moveBy(0, -80, 10, enchant.Easing.CUBIC_EASEOUT) // 12フレームかけて現在の位置から上に120px移動
-          .moveBy(0, 80, 10, enchant.Easing.CUBIC_EASEIN);   // 12フレームかけて現在の位置から下に120px移動
+          Kure.tl.moveBy(0, -80, 6, enchant.Easing.CUBIC_EASEOUT) // 12フレームかけて現在の位置から上に120px移動
+          .moveBy(0, 80, 6, enchant.Easing.CUBIC_EASEIN);   // 12フレームかけて現在の位置から下に120px移動
           // 以下はコメントアウトまたは削除
           // タッチでゲームオーバーシーンに遷移(仮)
           // game_.pushScene(createGameoverScene());// ゲームオーバーシーンをゲームシーンに重ねる(push)
