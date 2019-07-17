@@ -1,0 +1,27 @@
+
+<html>
+<body>
+
+<form name="io">
+  <input type="button" value="ŽÀs" onClick="get()">
+  <textarea id="output" cols="50" rows="5"></textarea>
+</form>
+
+<script>
+function get() {
+  xhr = new XMLHttpRequest();
+  xhr.onload = setResponseText;
+  xhr.open("GET", "/isaka1919/hello.txt", true);
+  xhr.send();
+}
+</script>
+
+<script>
+function setResponseText() {
+  document.getElementById("output").innerHTML = xhr.responseText;
+}
+</script>
+
+</body>
+</html>
+ 

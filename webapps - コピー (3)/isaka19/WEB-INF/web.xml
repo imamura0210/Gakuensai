@@ -1,0 +1,56 @@
+<web-app>
+
+	<servlet>
+		<servlet-name>kamata</servlet-name>
+		<servlet-class>KamataServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>kamata</servlet-name>
+		<url-pattern>/mahiro</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>time</servlet-name>
+		<jsp-file>/time.jsp</jsp-file>
+	</servlet>
+	
+	
+	<servlet-mapping>
+		<servlet-name>time</servlet-name>
+		<url-pattern>/time</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>list</servlet-name>
+		<jsp-file>/listoutput.jsp</jsp-file>
+	</servlet>
+	
+	
+	<servlet-mapping>
+		<servlet-name>list</servlet-name>
+		<url-pattern>/list</url-pattern>
+	</servlet-mapping>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/notfound.jsp</location>
+	</error-page>
+	
+	<error-page>
+		<error-type>javax.servlet.ServletException</error-type>
+		<location>/nocontent.jsp</location>
+	</error-page>
+	
+	<servlet>
+		<servlet-name>sampleservlet</servlet-name>
+		<servlet-class>SampleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>sampleservlet</servlet-name>
+		<url-pattern>/sampleservlet</url-pattern>
+	</servlet-mapping>
+
+</web-app>
