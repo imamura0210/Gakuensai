@@ -57,7 +57,7 @@ window.onload = function() {
     */
     var createGameScene = function() {
       var GROUND_LINE = 250;                                 // 地平線の高さ（固定）
-      var SCROLL_SPEED = 10  　　　　　　　　　　　　　　　　　 // スクロールの速さ
+      var SCROLL_SPEED = 10;  　　　　　　　　　　　　　　　　　 // スクロールの速さ
       var scene = new Scene();                           　　// 新しいシーンを作る
       var scroll = 0; 　　　　　　　　　　　　　　　　　　　　  // スクロール量を記録する変数
       scene.backgroundColor = '#8cc820';
@@ -643,6 +643,8 @@ window.onload = function() {
       // ゲームシーンを返す
       return scene;
     };
+
+
     /**
     * ゲームオーバーシーン
     *
@@ -652,6 +654,67 @@ window.onload = function() {
     * 例) var createGameoverScore = function (resultScore, test1, test2) {
     */
     var createGameoverScene = function(resultScore) {
+    //myStorage = localStorage;
+	//スコア
+	var value=Number(scroll.toString());
+
+	//データの保存
+	if(localStorage.getItem('rank1')==null){
+	    localStorage.setItem('rank1','0');
+	}
+	if(localStorage.getItem('rank2')==null){
+	    localStorage.setItem('rank2','0');
+	}
+	if(localStorage.getItem('rank3')==null){
+	    localStorage.setItem('rank3','0');
+	}
+	if(localStorage.getItem('rank4')==null){
+	    localStorage.setItem('rank4','0');
+	}
+	if(localStorage.getItem('rank5')==null){
+	    localStorage.setItem('rank5','0');
+	}
+
+
+	//
+	var rank1=Number(localStorage.getItem('rank1'));
+	var rank2=Number(localStorage.getItem('rank2'));
+	var rank3=Number(localStorage.getItem('rank3'));
+	var rank4=Number(localStorage.getItem('rank4'));
+	var rank5=Number(localStorage.getItem('rank5'));
+
+	//
+	if(rank1<=value){
+	    localStorage.setItem('rank5',rank4);
+	    localStorage.setItem('rank4',rank3);
+	    localStorage.setItem('rank3',rank2);
+	    localStorage.setItem('rank2',rank1);
+	    localStorage.setItem('rank1',value);
+	    //break;
+	}
+	else if(rank2<=value){
+	    localStorage.setItem('rank5',rank4);
+	    localStorage.setItem('rank4',rank3);
+	    localStorage.setItem('rank3',rank2);
+	    localStorage.setItem('rank2',value);
+	    //break;
+	}
+	else if(rank3<=value){
+	    localStorage.setItem('rank5',rank4);
+	    localStorage.setItem('rank4',rank3);
+	    localStorage.setItem('rank3',value);
+	    //break;
+	}
+	else if(rank4<=value){
+	    localStorage.setItem('rank5',rank4);
+	    localStorage.setItem('rank4',value);
+	    //break;
+	}
+	else if(rank5<=value){
+	    localStorage.setItem('rank5',value);
+	    //break;
+	}
+
       var scene = new Scene();                                   // 新しいシーンを作る
       scene.backgroundColor = '#303030';                         // シーンの背景色を設定
       // ゲームオーバーラベル設定
@@ -714,35 +777,35 @@ window.onload = function() {
       scoreHead.font = '30px Impact';
       scene.addChild(scoreHead);
 
-      var firstScore = new Label('10000');
+      var firstScore = new Label(localStorage.getItem('rank1'));
       firstScore.color = "#ffffff";
       firstScore.x = 170;
       firstScore.y = 95;
       firstScore.font = '20px Impact';
       scene.addChild(firstScore);
 
-      var secondScore = new Label('9000');
+      var secondScore = new Label(localStorage.getItem('rank2'));
       secondScore.color = '#ffffff';
       secondScore.x = 170;
       secondScore.y = 130;
       secondScore.font = '20px Impact';
       scene.addChild(secondScore);
 
-      var thirdScore = new Label('8000');
+      var thirdScore = new Label(localStorage.getItem('rank3'));
       thirdScore.color = '#ffffff';
       thirdScore.x = 170;
       thirdScore.y = 165;
       thirdScore.font = '20px Impact';
       scene.addChild(thirdScore);
 
-      var fourthScore = new Label('7000');
+      var fourthScore = new Label(localStorage.getItem('rank4'));
       fourthScore.color = '#ffffff';
       fourthScore.x = 170;
       fourthScore.y = 200;
       fourthScore.font = '20px Impact';
       scene.addChild(fourthScore);
 
-      var fifthScore = new Label('0');
+      var fifthScore = new Label(localStorage.getItem('rank5'));
       fifthScore.color = '#ffffff';
       fifthScore.x = 170;
       fifthScore.y = 235;
@@ -851,35 +914,35 @@ window.onload = function() {
       scoreHead.font = '30px Impact';
       scene.addChild(scoreHead);
 
-      var firstScore = new Label('10000');
+      var firstScore = new Label(localStorage.getItem('rank1'));
       firstScore.color = "#ffffff";
       firstScore.x = 170;
       firstScore.y = 95;
       firstScore.font = '20px Impact';
       scene.addChild(firstScore);
 
-      var secondScore = new Label('9000');
+      var secondScore = new Label(localStorage.getItem('rank2'));
       secondScore.color = '#ffffff';
       secondScore.x = 170;
       secondScore.y = 130;
       secondScore.font = '20px Impact';
       scene.addChild(secondScore);
 
-      var thirdScore = new Label('8000');
+      var thirdScore = new Label(localStorage.getItem('rank3'));
       thirdScore.color = '#ffffff';
       thirdScore.x = 170;
       thirdScore.y = 165;
       thirdScore.font = '20px Impact';
       scene.addChild(thirdScore);
 
-      var fourthScore = new Label('7000');
+      var fourthScore = new Label(localStorage.getItem('rank4'));
       fourthScore.color = '#ffffff';
       fourthScore.x = 170;
       fourthScore.y = 200;
       fourthScore.font = '20px Impact';
       scene.addChild(fourthScore);
 
-      var fifthScore = new Label('0');
+      var fifthScore = new Label(localStorage.getItem('rank5'));
       fifthScore.color = '#ffffff';
       fifthScore.x = 170;
       fifthScore.y = 235;
