@@ -645,13 +645,8 @@ window.onload = function() {
     };
 
 
-    /**
-    * ゲームオーバーシーン
-    *
-    * ゲームオーバーシーンを作り、返す関数です。
-    * createGameoverScore(※引数) ※引数にスコアを入れると画面にスコアが表示されます
-    * ※は任意の名前でOKで、カンマ区切りで複数設定できます。
-    * 例) var createGameoverScore = function (resultScore, test1, test2) {
+    /*
+    ゲームオーバーシーン
     */
     var createGameoverScene = function(resultScore) {
     //myStorage = localStorage;
@@ -737,35 +732,35 @@ window.onload = function() {
       var firstRank = new Label('1');
       firstRank.color = '#ffffff';
       firstRank.x = 81;
-      firstRank.y = 95;
+      firstRank.y = 90;
       firstRank.font = '20px Impact';
       scene.addChild(firstRank);
 
       var secondRank = new Label('2');
       secondRank.color = '#ffffff';
       secondRank.x = 81;
-      secondRank.y = 130;
+      secondRank.y = 120;
       secondRank.font = '20px Impact';
       scene.addChild(secondRank);
 
       var thirdRank = new Label('3');
       thirdRank.color = '#ffffff';
       thirdRank.x = 81;
-      thirdRank.y = 165;
+      thirdRank.y = 150;
       thirdRank.font = '20px Impact';
       scene.addChild(thirdRank);
 
       var fourthRank = new Label('4');
       fourthRank.color = '#ffffff';
       fourthRank.x = 81;
-      fourthRank.y = 200;
+      fourthRank.y = 180;
       fourthRank.font = '20px Impact';
       scene.addChild(fourthRank);
 
       var fifthRank = new Label('5');
       fifthRank.color = '#ffffff';
       fifthRank.x = 81;
-      fifthRank.y = 235;
+      fifthRank.y = 210;
       fifthRank.font = '20px Impact';
       scene.addChild(fifthRank);
 
@@ -780,35 +775,35 @@ window.onload = function() {
       var firstScore = new Label(localStorage.getItem('rank1'));
       firstScore.color = "#ffffff";
       firstScore.x = 170;
-      firstScore.y = 95;
+      firstScore.y = 90;
       firstScore.font = '20px Impact';
       scene.addChild(firstScore);
 
       var secondScore = new Label(localStorage.getItem('rank2'));
       secondScore.color = '#ffffff';
       secondScore.x = 170;
-      secondScore.y = 130;
+      secondScore.y = 120;
       secondScore.font = '20px Impact';
       scene.addChild(secondScore);
 
       var thirdScore = new Label(localStorage.getItem('rank3'));
       thirdScore.color = '#ffffff';
       thirdScore.x = 170;
-      thirdScore.y = 165;
+      thirdScore.y = 150;
       thirdScore.font = '20px Impact';
       scene.addChild(thirdScore);
 
       var fourthScore = new Label(localStorage.getItem('rank4'));
       fourthScore.color = '#ffffff';
       fourthScore.x = 170;
-      fourthScore.y = 200;
+      fourthScore.y = 180;
       fourthScore.font = '20px Impact';
       scene.addChild(fourthScore);
 
       var fifthScore = new Label(localStorage.getItem('rank5'));
       fifthScore.color = '#ffffff';
       fifthScore.x = 170;
-      fifthScore.y = 235;
+      fifthScore.y = 210;
       fifthScore.font = '20px Impact';
       scene.addChild(fifthScore);
 
