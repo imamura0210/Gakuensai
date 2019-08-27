@@ -200,6 +200,7 @@ window.onload = function() {
       // シーンに毎フレームイベントを設定
       scene.addEventListener(Event.ENTER_FRAME, function() {
         scroll += SCROLL_SPEED / 10;
+
         scoreLabel.text = 'SCORE:'+scroll.toString(); // スコア表示を更新
 
         // 当たり判定用スプライトをくれの上下中心に置く
@@ -649,26 +650,26 @@ window.onload = function() {
     ゲームオーバーシーン
     */
     var createGameoverScene = function(resultScore) {
-    //myStorage = localStorage;
-	//スコア
-	var value=Number(scroll.toString());
+      //myStorage = localStorage;
+      //スコア
+      var value=resultScore;
 
-	//データの保存
-	if(localStorage.getItem('rank1')==null){
-	    localStorage.setItem('rank1','0');
-	}
-	if(localStorage.getItem('rank2')==null){
-	    localStorage.setItem('rank2','0');
-	}
-	if(localStorage.getItem('rank3')==null){
-	    localStorage.setItem('rank3','0');
-	}
-	if(localStorage.getItem('rank4')==null){
-	    localStorage.setItem('rank4','0');
-	}
-	if(localStorage.getItem('rank5')==null){
-	    localStorage.setItem('rank5','0');
-	}
+      //データの保存
+      if(localStorage.getItem('rank1')==null){
+        localStorage.setItem('rank1','0');
+	    }
+      if(localStorage.getItem('rank2')==null){
+        localStorage.setItem('rank2','0');
+      }
+      if(localStorage.getItem('rank3')==null){
+        localStorage.setItem('rank3','0');
+      }
+      if(localStorage.getItem('rank4')==null){
+        localStorage.setItem('rank4','0');
+      }
+      if(localStorage.getItem('rank5')==null){
+        localStorage.setItem('rank5','0');
+      }
 
 
 	//
