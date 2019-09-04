@@ -2,14 +2,14 @@ enchant();
 window.onload = function() {
   var game_ = new Game(320, 320); // 表示領域の大きさを設定
   game_.fps = 24;                 // ゲームの進行スピードを設定
-  game_.preload('./img/chara2.png', './img/start.png','./img/title.png', './img/ranking.png', './img/gameover.png', './img/bg1.png','./img/bg2.png', './img/hurdle.png', './img/minihurdle.png', './img/bird.png', './img/rocket.png'); // ゲームに使う素材を、あらかじめ読み込む
+  game_.preload('./img/start3.png','./img/ranking.png','./img/question.png','./img/chara2.png', './img/start.png','./img/title.png', './img/ranking.png', './img/gameover.png', './img/bg1.png','./img/bg2.png', './img/hurdle.png', './img/minihurdle.png', './img/bird.png', './img/rocket.png'); // ゲームに使う素材を、あらかじめ読み込む
   game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行
 
     /*
     タイトルシーン
     */
     var createStartScene = function() {
-      var scene = new Scene();                                // 新しいシーンを作る
+      var scene = new Scene();                                //  新しいシーンを作る
 
       // 背景画像を設定
       var bgImage = new Sprite(320, 320);
@@ -19,10 +19,10 @@ window.onload = function() {
       scene.addChild(bgImage);
 
       // スタート画像設定
-      var startImage = new Sprite(172, 48);
-      startImage.image = game_.assets['./img/start.png'];
-      startImage.x = 70;
-      startImage.y = 125;
+      var startImage = new Sprite(175,53);
+      startImage.image = game_.assets['./img/start3.png'];
+      startImage.x = 75;
+      startImage.y = 120;
       scene.addChild(startImage);
 
       // タイトルラベル設定
@@ -33,11 +33,18 @@ window.onload = function() {
       scene.addChild(title);
 
       //ランキングラベル設定
-      var toRankScene = new Sprite(180, 49);
+      var toRankScene = new Sprite(200,52);
       toRankScene.image = game_.assets['./img/ranking.png'];
-      toRankScene.x = 70;
-      toRankScene.y = 226;
+      toRankScene.x = 60;
+      toRankScene.y = 195;
       scene.addChild(toRankScene);
+
+      //question
+      var question = new Sprite(30,30);
+      question.image = game_.assets['./img/question.png'];
+      question.x = 260;
+      question.y = 270;
+      scene.addChild(question);
 
 
       // スタート画像にタッチイベントを設定
@@ -47,6 +54,10 @@ window.onload = function() {
 
       //ランキングラベルにタッチイベントを設定
       toRankScene.addEventListener(Event.TOUCH_START, function(e){
+        game_.replaceScene(createRankScene());
+      })
+      // questionマークにタッチイベントを設定
+      question.addEventListener(Event.TOUCH_START, function(e){
         game_.replaceScene(createRankScene());
       })
       // タイトルシーンを返す
