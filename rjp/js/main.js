@@ -1,51 +1,48 @@
 enchant();
 window.onload = function() {
   var game_ = new Game(320, 320); // 表示領域の大きさを設定
+  previewCenter(game_);   // ←この行で中央寄せを実施
   game_.fps = 24;                 // ゲームの進行スピードを設定
-  game_.preload('./img/start3.png','./img/ranking.png','./img/question.png','./img/chara2.png', './img/start.png','./img/title.png', './img/ranking.png', './img/gameover.png', './img/bg1.png','./img/bg2.png', './img/hurdle.png', './img/minihurdle.png', './img/bird.png', './img/rocket.png'); // ゲームに使う素材を、あらかじめ読み込む
+  game_.preload('./img/question.png','./img/setumei.png','./img/chara2.png', './img/start.png','./img/title.png', './img/ranking.png', './img/gameover.png', './img/bg1.png','./img/bg2.png', './img/hurdle.png', './img/minihurdle.png', './img/bird.png', './img/rocket.png'); // ゲームに使う素材を、あらかじめ読み込む
   game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行
-
-    /*
-    タイトルシーン
-    */
+    /*--タイトルシーン--*/
     var createStartScene = function() {
-      var scene = new Scene();                                //  新しいシーンを作る
+      var scene = new Scene();
 
-      // 背景画像を設定
+      // 背景画像
       var bgImage = new Sprite(320, 320);
       bgImage.image = game_.assets['./img/bg1.png'];
       bgImage.x = 0;
       bgImage.y = 0;
       scene.addChild(bgImage);
 
-      // スタート画像設定
-      var startImage = new Sprite(175,53);
-      startImage.image = game_.assets['./img/start3.png'];
+      // スタート画像
+      var startImage = new Sprite(175, 53);
+      startImage.image = game_.assets['./img/start.png'];
       startImage.x = 75;
       startImage.y = 120;
       scene.addChild(startImage);
 
-      // タイトルラベル設定
+      // タイトルラベル
       var title = new Sprite(300, 79);
       title.image = game_.assets['./img/title.png'];
       title.x = 10;
       title.y = 10;
       scene.addChild(title);
 
-      //ランキングラベル設定
-      var toRankScene = new Sprite(200,52);
+      //ランキングラベル
+      var toRankScene = new Sprite(200, 52);
       toRankScene.image = game_.assets['./img/ranking.png'];
       toRankScene.x = 60;
-      toRankScene.y = 195;
+      toRankScene.y = 200;
       scene.addChild(toRankScene);
 
-      //question
+      //説明ラベル
       var question = new Sprite(30,30);
       question.image = game_.assets['./img/question.png'];
       question.x = 260;
       question.y = 270;
       scene.addChild(question);
-
 
       // スタート画像にタッチイベントを設定
       startImage.addEventListener(Event.TOUCH_START, function(e) {
@@ -56,149 +53,148 @@ window.onload = function() {
       toRankScene.addEventListener(Event.TOUCH_START, function(e){
         game_.replaceScene(createRankScene());
       })
-      // questionマークにタッチイベントを設定
+
+      //説明ラベルにタッチイベントを設定
       question.addEventListener(Event.TOUCH_START, function(e){
-        game_.replaceScene(createRankScene());
-      })
+        game_.replaceScene(createDescriptionScene());
+      });
       // タイトルシーンを返す
       return scene;
     };
-    /*
-    ゲームシーン
-    */
+    /*--ゲームシーン--*/
     var createGameScene = function() {
-      var GROUND_LINE = 250;                                 // 地平線の高さ（固定）
-      var SCROLL_SPEED = 10;  　　　　　　　　　　　　　　　　　 // スクロールの速さ
-      var scene = new Scene();                           　　// 新しいシーンを作る
-      var scroll = 0; 　　　　　　　　　　　　　　　　　　　　  // スクロール量を記録する変数
+      var GROUND_LINE = 250; // 地平線の高さ
+      var SCROLL_SPEED = 10;//スクロールの速さ
+      var scene = new Scene();
+      var scroll = 0;// スクロール量を記録する変数
       scene.backgroundColor = '#8cc820';
 
-      // スクロールする背景1の設定
+      //背景1
       var bg1 = new Sprite(320, 320);
       bg1.image = game_.assets['./img/bg1.png'];
       bg1.x = 0;
       bg1.y = 0;
       scene.addChild(bg1);
 
-      // スクロールする背景2の設定
+      //背景2
       var bg2 = new Sprite(320, 320);
-      bg2.image = game_.assets['./img/bg2.png'];
+      bg2.image = game_.assets['./img/bg1.png'];
       bg2.x = 320;
       bg2.y = 0;
       scene.addChild(bg2);
 
-      // スコア表示用ラベルの設定
+      //スコア表示用ラベル
       var scoreLabel = new Label("");
       scoreLabel.color = '#000000';
       scoreLabel.font = '15px Impact';
       scoreLabel.x = 250;
       scene.addChild(scoreLabel);
 
-      // ハードルの設定
+      // ハードル1
       var hurdleA = new Sprite(50, 75);
       hurdleA.image = game_.assets['./img/hurdle.png'];
-      hurdleA.x = -hurdleA.width;                  //画面外に隠しておく
+      hurdleA.x = -hurdleA.width;
       hurdleA.y = (GROUND_LINE - hurdleA.height) * 1.1;
       scene.addChild(hurdleA);
 
-      // ハードルの設定2
+      //ハードル2
       var hurdleB = new Sprite(50, 75);
       hurdleB.image = game_.assets['./img/hurdle.png'];
-      hurdleB.x = -hurdleB.width;                  //画面外に隠しておく
+      hurdleB.x = -hurdleB.width;
       hurdleB.y = (GROUND_LINE - hurdleB.height) * 1.1;
       scene.addChild(hurdleB);
 
-      // ハードルの設定3
+      //ハードル3
       var hurdleC = new Sprite(50, 75);
       hurdleC.image = game_.assets['./img/hurdle.png'];
-      hurdleC.x = -hurdleC.width;                  //画面外に隠しておく
+      hurdleC.x = -hurdleC.width;
       hurdleC.y = (GROUND_LINE - hurdleC.height) * 1.1;
       scene.addChild(hurdleC);
 
-      // ミニハードルの設定
+      //ミニハードル1
       var miniHurdleA = new Sprite(45, 35);
       miniHurdleA.image = game_.assets['./img/minihurdle.png'];
-      miniHurdleA.x = -miniHurdleA.width;                //画面外に隠しておく
+      miniHurdleA.x = -miniHurdleA.width;
       miniHurdleA.y = (GROUND_LINE - miniHurdleA.height) * 1.02;
       scene.addChild(miniHurdleA);
 
-      // ミニハードルの設定２
+      //ミニハードル2
       var miniHurdleB = new Sprite(45, 35);
       miniHurdleB.image = game_.assets['./img/minihurdle.png'];
-      miniHurdleB.x = -miniHurdleB.width;                //画面外に隠しておく
+      miniHurdleB.x = -miniHurdleB.width;
       miniHurdleB.y = (GROUND_LINE - miniHurdleB.height) * 1.02;
       scene.addChild(miniHurdleB);
 
-      // ミニハードルの設定３
+      //ミニハードル3
       var miniHurdleC = new Sprite(45, 35);
       miniHurdleC.image = game_.assets['./img/minihurdle.png'];
       miniHurdleC.x = -miniHurdleC.width;
       miniHurdleC.y = (GROUND_LINE - miniHurdleC.height) * 1.02;
       scene.addChild(miniHurdleC);
 
-      // 鳥の設定
+      //鳥
       var bird1 = new Sprite(64, 32);
       bird1.image = game_.assets['./img/bird.png'];
       bird1.x = -bird1.width;
       bird1.y = 150;
       scene.addChild(bird1);
 
-      // 鳥の設定2
+      //鳥2
       var bird2 = new Sprite(64, 32);
       bird2.image = game_.assets['./img/bird.png'];
       bird2.x = -bird1.width;
       bird2.y = 150;
       scene.addChild(bird2);
 
-      // 鳥の設定3
+      //鳥3
       var bird3 = new Sprite(64, 32);
       bird3.image = game_.assets['./img/bird.png'];
       bird3.x = -bird3.width;
       bird3.y = 190;
       scene.addChild(bird3);
 
-      // 鳥の設定4
+      //鳥4
       var bird4 = new Sprite(64, 32);
       bird4.image = game_.assets['./img/bird.png'];
       bird4.x = -bird3.width;
       bird4.y = GROUND_LINE - bird4.height;
       scene.addChild(bird4);
 
-      // ロケットの設定
+      //ロケット
       var rocket1 = new Sprite(64, 32);
       rocket1.image = game_.assets['./img/rocket.png'];
       rocket1.x = -rocket1.width;
       rocket1.y = 190;
       scene.addChild(rocket1);
 
-      // ロケットの設定2
+      //ロケット2
       var rocket2 = new Sprite(64, 32);
       rocket2.image = game_.assets['./img/rocket.png'];
       rocket2.x = -rocket2.width;
       rocket2.y = 150;
       scene.addChild(rocket2);
 
-      // ロケットの設定3
+      //ロケット3
       var rocket3 = new Sprite(64, 32);
       rocket3.image = game_.assets['./img/rocket.png'];
       rocket3.x = -rocket3.width;
       rocket3.y = (GROUND_LINE - miniHurdleC.height) * 1.02;
       scene.addChild(rocket3);
 
-      // くれの設定
+      //くれ
       var Kure = new Sprite(32, 32);
       Kure.image = game_.assets['./img/chara2.png'];
       Kure.x = 80;
       Kure.y = GROUND_LINE - Kure.height;
       scene.addChild(Kure);
 
-      // くれの当たり判定用スプライトの設定
+      //くれの当たり判定
       var Kure_hit = new Sprite(1, 1)
       Kure_hit.x = Kure.x + Kure.width / 2;
       Kure_hit.y = Kure.y + Kure.height / 2;
       scene.addChild(Kure_hit);
 
-      // くれがやられた関数
+      //くれがやられた関数
       var KureDead = function() {
         game_.pushScene(createGameoverScene(scroll));
       }
@@ -211,63 +207,77 @@ window.onload = function() {
       // シーンに毎フレームイベントを設定
       scene.addEventListener(Event.ENTER_FRAME, function() {
         scroll += SCROLL_SPEED / 10;
-
         scoreLabel.text = 'SCORE:'+scroll.toString(); // スコア表示を更新
 
-        // 当たり判定用スプライトをくれの上下中心に置く
+        // 当たり判定用スプライトをくれの中心に置く
         Kure_hit.x = Kure.x + Kure.width/2;
         Kure_hit.y = Kure.y + Kure.height/2;
 
-        // 障害物の出現タイミング
-        //分岐処理で難易度調整
+        //障害物の出現タイミング(分岐処理で難易度調整)
         if(scroll < 500){
           if(scroll % 40 === 0 && scroll % 120 != 0){
-            if(miniFlag === 0){
-              miniHurdleA.x = 320;
-              miniFlag++;
-            } else if(miniFlag === 1){
-              miniHurdleB.x = 320;
-              miniFlag++;
-            } else {
-              miniHurdleC.x = 320;
-              miniFlag = 0;
+            switch(miniFlag){
+              case 0:
+                miniHurdleA.x = 320;
+                miniFlag++;
+                break;
+              case 1:
+                miniHurdleB.x = 320;
+                miniFlag++;
+                break;
+              case 2:
+                miniHurdleC.x = 320;
+                miniFlag = 0;
+                break;
             }
           }
           if(scroll % 120 === 0){
-            if(hurFlag === 0){
-              hurdleA.x = 320;
-              hurFlag++;
-            } else if(hurFlag == 1){
-              hurdleB.x = 320;
-              hurFlag++;
-            } else {
-              hurdleC.x = 320;
-              hurFlag = 0;
+            switch(hurFlag){
+              case 0:
+                hurdleA.x = 320;
+                hurFlag++;
+                break;
+              case 1:
+                hurdleB.x = 320;
+                hurFlag++;
+                break;
+              case 2:
+                hurdleC.x = 320;
+                hurFlag = 0;
+                break;
             }
           }
         } else if(scroll >= 500 && scroll < 1000){
           if(scroll % 40 === 0 && scroll % 80 != 0 && scroll % 120 != 0 && scroll % 160 != 0){
-            if(miniFlag === 0){
-              miniHurdleA.x = 320;
-              miniFlag++;
-            } else if(miniFlag === 1){
-              miniHurdleB.x = 320;
-              miniFlag++;
-            } else {
-              miniHurdleC.x = 320;
-              miniFlag = 0;
+            switch(miniFlag){
+              case 0:
+                miniHurdleA.x = 320;
+                miniFlag++;
+                break;
+              case 1:
+                miniHurdleB.x = 320;
+                miniFlag++;
+                break;
+              case 2:
+                miniHurdleC.x = 320;
+                miniFlag = 0;
+                break;
             }
           }
           if((scroll % 80 === 0 || scroll % 120 === 0) && scroll % 160 != 0){
-            if(hurFlag === 0){
-              hurdleA.x = 320;
-              hurFlag++;
-            } else if(hurFlag === 1){
-              hurdleB.x = 320;
-              hurFlag++;
-            } else {
-              hurdleC.x = 320;
-              hurFlag = 0;
+            switch(hurFlag){
+              case 0:
+                hurdleA.x = 320;
+                hurFlag++;
+                break;
+              case 1:
+                hurdleB.x = 320;
+                hurFlag++;
+                break;
+              case 2:
+                hurdleC.x = 320;
+                hurFlag = 0;
+                break;
             }
           }
           if(scroll % 160 === 0){
@@ -281,27 +291,35 @@ window.onload = function() {
           }
         } else if(scroll >= 1000 && scroll < 1500){
           if(scroll % 30 === 0 && scroll % 90 != 0 && scroll % 120 != 0){
-            if(miniFlag === 0){
-              miniHurdleA.x = 320;
-              miniFlag++;
-            } else if(miniFlag === 1){
-              miniHurdleB.x = 320;
-              miniFlag++;
-            } else {
-              miniHurdleC.x = 320;
-              miniFlag = 0;
+            switch(miniFlag){
+              case 0:
+                miniHurdleA.x = 320;
+                miniFlag++;
+                break;
+              case 1:
+                miniHurdleB.x = 320;
+                miniFlag++;
+                break;
+              case 2:
+                miniHurdleC.x = 320;
+                miniFlag = 0;
+                break;
             }
           }
           if(scroll % 90 === 0 && scroll % 120 != 0){
-            if(hurFlag === 0){
-              hurdleA.x = 320;
-              hurFlag++;
-            } else if(hurFlag === 1){
-              hurdleB.x = 320;
-              hurFlag++;
-            } else {
-              hurdleC.x = 320;
-              hurFlag = 0;
+            switch(hurFlag){
+              case 0:
+                hurdleA.x = 320;
+                hurFlag++;
+                break;
+              case 1:
+                hurdleB.x = 320;
+                hurFlag++;
+                break;
+              case 2:
+                hurdleC.x = 320;
+                hurFlag = 0;
+                break;
             }
           }
           if(scroll % 120 === 0){
@@ -315,15 +333,19 @@ window.onload = function() {
           }
         }else if(scroll >= 1500 && scroll < 2000){
           if(scroll % 30 === 0 && scroll % 90 != 0 && scroll % 120 != 0){
-            if(hurFlag === 0){
-              hurdleA.x = 320;
-              hurFlag++;
-            } else if(hurFlag === 1){
-              hurdleB.x = 320;
-              hurFlag++;
-            } else {
-              hurdleC.x = 320;
-              hurFlag = 0;
+            switch(hurFlag){
+              case 0:
+                hurdleA.x = 320;
+                hurFlag++;
+                break;
+              case 1:
+                hurdleB.x = 320;
+                hurFlag++;
+                break;
+              case 2:
+                hurdleC.x = 320;
+                hurFlag = 0;
+                break;
             }
           }
           if(scroll % 90 === 0 && scroll % 120 != 0){
@@ -350,15 +372,19 @@ window.onload = function() {
           }
         }else if(scroll >= 2500 && scroll < 3000){
           if(scroll % 20 === 0 && scroll % 100 != 0 && scroll % 120 != 0){
-            if(hurFlag === 0){
-              hurdleA.x = 320;
-              hurFlag++;
-            } else if(hurFlag === 1){
-              hurdleB.x = 320;
-              hurFlag++;
-            } else {
-              hurdleC.x = 320;
-              hurFlag = 0;
+            switch(hurFlag){
+              case 0:
+                hurdleA.x = 320;
+                hurFlag++;
+                break;
+              case 1:
+                hurdleB.x = 320;
+                hurFlag++;
+                break;
+              case 2:
+                hurdleC.x = 320;
+                hurFlag = 0;
+                break;
             }
           }
           if(scroll % 100 === 0 && scroll % 120 != 0){
@@ -375,15 +401,19 @@ window.onload = function() {
           }
         }else if(scroll >= 3000 && scroll < 3500){
           if(scroll % 20 === 0 && scroll % 100 != 0 && scroll % 60 != 0){
-            if(hurFlag === 0){
-              hurdleA.x = 320;
-              hurFlag++;
-            } else if(hurFlag === 1){
-              hurdleB.x = 320;
-              hurFlag++;
-            } else {
-              hurdleC.x = 320;
-              hurFlag = 0;
+            switch(hurFlag){
+              case 0:
+                hurdleA.x = 320;
+                hurFlag++;
+                break;
+              case 1:
+                hurdleB.x = 320;
+                hurFlag++;
+                break;
+              case 2:
+                hurdleC.x = 320;
+                hurFlag = 0;
+                break;
             }
           }
           if(scroll % 100 === 0 && scroll % 60 != 0){
@@ -400,15 +430,19 @@ window.onload = function() {
           }
         }else if(scroll >= 3500 && scroll < 4000){
           if(scroll % 20 === 0 && scroll % 100 != 0 && scroll % 40 != 0){
-            if(hurFlag === 0){
-              hurdleA.x = 320;
-              hurFlag++;
-            } else if(hurFlag === 1){
-              hurdleB.x = 320;
-              hurFlag++;
-            } else {
-              hurdleC.x = 320;
-              hurFlag = 0;
+            switch(hurFlag){
+              case 0:
+                hurdleA.x = 320;
+                hurFlag++;
+                break;
+              case 1:
+                hurdleB.x = 320;
+                hurFlag++;
+                break;
+              case 2:
+                hurdleC.x = 320;
+                hurFlag = 0;
+                break;
             }
           }
           if(scroll % 100 === 0){
@@ -722,115 +756,116 @@ window.onload = function() {
 	    //break;
 	}
 
-      var scene = new Scene();                                   // 新しいシーンを作る
-      scene.backgroundColor = '#303030';                         // シーンの背景色を設定
+      var scene = new Scene();
+      scene.backgroundColor = '#ffffff';
+
       // ゲームオーバーラベル設定
-      var gameover = new Label('GAMEOVER');                   // スプライトを作る
+      var gameover = new Label('GAMEOVER');
       gameover.textAlign = 'center';
-      gameover.color = '#ffffff';
+      gameover.color = '#000000';
       gameover.x = 0;                                      // 横位置調整
       gameover.y = 0;                                     // 縦位置調整
       gameover.font = '35px Impact';
       scene.addChild(gameover);                             // シーンに追加
 
       //ランキング
-      var rankHead = new Label('rank');
-      rankHead.color = '#ffffff';
+      var rankHead = new Label('RANK');
+      rankHead.color = '#000000';
       rankHead.x = 60;
       rankHead.y = 50;
       rankHead.font = '30px Impact';
       scene.addChild(rankHead);
 
       var firstRank = new Label('1');
-      firstRank.color = '#ffffff';
-      firstRank.x = 81;
-      firstRank.y = 90;
-      firstRank.font = '20px Impact';
+      firstRank.color = '#ffd700';
+      firstRank.x = 78;
+      firstRank.y = 82;
+      firstRank.font = '35px Impact';
       scene.addChild(firstRank);
 
       var secondRank = new Label('2');
-      secondRank.color = '#ffffff';
-      secondRank.x = 81;
-      secondRank.y = 120;
-      secondRank.font = '20px Impact';
+      secondRank.color = '#c0c0c0';
+      secondRank.x = 79;
+      secondRank.y = 123;
+      secondRank.font = '30px Impact';
       scene.addChild(secondRank);
 
       var thirdRank = new Label('3');
-      thirdRank.color = '#ffffff';
-      thirdRank.x = 81;
-      thirdRank.y = 150;
-      thirdRank.font = '20px Impact';
+      thirdRank.color = '#daa520';
+      thirdRank.x = 80;
+      thirdRank.y = 158;
+      thirdRank.font = '25px Impact';
       scene.addChild(thirdRank);
 
       var fourthRank = new Label('4');
-      fourthRank.color = '#ffffff';
+      fourthRank.color = '#000000';
       fourthRank.x = 81;
-      fourthRank.y = 180;
+      fourthRank.y = 190;
       fourthRank.font = '20px Impact';
       scene.addChild(fourthRank);
 
       var fifthRank = new Label('5');
-      fifthRank.color = '#ffffff';
+      fifthRank.color = '#000000';
       fifthRank.x = 81;
-      fifthRank.y = 210;
+      fifthRank.y = 220;
       fifthRank.font = '20px Impact';
       scene.addChild(fifthRank);
 
       //スコア
-      var scoreHead = new Label('score');
-      scoreHead.color = '#ffffff';
+      var scoreHead = new Label('SCORE');
+      scoreHead.color = '#000000';
       scoreHead.x = 160;
       scoreHead.y = 50;
       scoreHead.font = '30px Impact';
       scene.addChild(scoreHead);
 
       var firstScore = new Label(localStorage.getItem('rank1'));
-      firstScore.color = "#ffffff";
-      firstScore.x = 170;
-      firstScore.y = 90;
-      firstScore.font = '20px Impact';
+      firstScore.color = "#ff0000";
+      firstScore.x = 160;
+      firstScore.y = 87;
+      firstScore.font = '30px Impact';
       scene.addChild(firstScore);
 
       var secondScore = new Label(localStorage.getItem('rank2'));
-      secondScore.color = '#ffffff';
-      secondScore.x = 170;
-      secondScore.y = 120;
-      secondScore.font = '20px Impact';
+      secondScore.color = '#000000';
+      secondScore.x = 160;
+      secondScore.y = 123;
+      secondScore.font = '30px Impact';
       scene.addChild(secondScore);
 
       var thirdScore = new Label(localStorage.getItem('rank3'));
-      thirdScore.color = '#ffffff';
-      thirdScore.x = 170;
-      thirdScore.y = 150;
-      thirdScore.font = '20px Impact';
+      thirdScore.color = '#000000';
+      thirdScore.x = 160;
+      thirdScore.y = 158;
+      thirdScore.font = '25px Impact';
       scene.addChild(thirdScore);
 
       var fourthScore = new Label(localStorage.getItem('rank4'));
-      fourthScore.color = '#ffffff';
-      fourthScore.x = 170;
-      fourthScore.y = 180;
+      fourthScore.color = '#000000';
+      fourthScore.x = 160;
+      fourthScore.y = 190;
       fourthScore.font = '20px Impact';
       scene.addChild(fourthScore);
 
       var fifthScore = new Label(localStorage.getItem('rank5'));
-      fifthScore.color = '#ffffff';
-      fifthScore.x = 170;
-      fifthScore.y = 210;
+      fifthScore.color = '#000000';
+      fifthScore.x = 160;
+      fifthScore.y = 220;
       fifthScore.font = '20px Impact';
       scene.addChild(fifthScore);
 
       // スコアラベル設定
       var label = new Label('YOUR SCORE:'+resultScore);            //スコアを代入
       label.textAlign = 'center';                                // 文字を中央寄せ
-      label.color = '#fff';                                      // 文字を白色に
+      label.color = '#000000';
       label.x = 0;                                               // 横位置調整
-      label.y = 240;                                              // 縦位置調整
+      label.y = 252;                                              // 縦位置調整
       label.font = '25px Impact';                            // 40pxのゴシック体にする
       scene.addChild(label);                                     // シーンに追加
 
       // リトライラベル(ボタン)設定
       var retryLabel = new Label('RETRY');                  // ラベルを作る
-      retryLabel.color = '#ffffff';                                 // 文字を白色に
+      retryLabel.color = '#000000';                                 // 文字を白色に
       retryLabel.x = 10;                                          // 横位置調整
       retryLabel.y = 285;                                        // 縦位置調整
       retryLabel.font = '25px Impact';                       // 20pxのゴシック体にする
@@ -838,7 +873,7 @@ window.onload = function() {
 
       //タイトルに戻るラベル(ボタン)設定
       var exit = new Label("EXIT");
-      exit.color = '#ffffff';
+      exit.color = '#000000';
       exit.x = 260;
       exit.y = 285;
       exit.font = '25px Impact';
@@ -860,105 +895,105 @@ window.onload = function() {
     */
     var createRankScene = function() {
       var scene = new Scene();                                   // 新しいシーンを作る
-      scene.backgroundColor = '#303030';                         // シーンの背景色を設定
+      scene.backgroundColor = '#ffffff';                         // シーンの背景色を設定
       // スコアランキング設定
       var ranking = new Label('SCORE RANKING');                   // スプライトを作る
       ranking.textAlign = 'center';
-      ranking.color = '#ffffff';
+      ranking.color = '#000000';
       ranking.x = 0;                                      // 横位置調整
       ranking.y = 10;                                     // 縦位置調整
       ranking.font = '35px Impact';
       scene.addChild(ranking);                             // シーンに追加
 
       //ランキング
-      var rankHead = new Label('rank');
-      rankHead.color = '#ffffff';
-      rankHead.x = 60;
+      var rankHead = new Label('RANK');
+      rankHead.color = '#000000';
+      rankHead.x = 55;
       rankHead.y = 50;
       rankHead.font = '30px Impact';
       scene.addChild(rankHead);
 
       var firstRank = new Label('1');
-      firstRank.color = '#ffffff';
-      firstRank.x = 81;
-      firstRank.y = 95;
-      firstRank.font = '20px Impact';
+      firstRank.color = '#ffd700';
+      firstRank.x = 78;
+      firstRank.y = 85;
+      firstRank.font = '35px Impact';
       scene.addChild(firstRank);
 
       var secondRank = new Label('2');
-      secondRank.color = '#ffffff';
-      secondRank.x = 81;
-      secondRank.y = 130;
-      secondRank.font = '20px Impact';
+      secondRank.color = '#c0c0c0';
+      secondRank.x = 79;
+      secondRank.y = 125;
+      secondRank.font = '30px Impact';
       scene.addChild(secondRank);
 
       var thirdRank = new Label('3');
-      thirdRank.color = '#ffffff';
-      thirdRank.x = 81;
-      thirdRank.y = 165;
-      thirdRank.font = '20px Impact';
+      thirdRank.color = '#daa520';
+      thirdRank.x = 80;
+      thirdRank.y = 163;
+      thirdRank.font = '25px Impact';
       scene.addChild(thirdRank);
 
       var fourthRank = new Label('4');
-      fourthRank.color = '#ffffff';
+      fourthRank.color = '#000000';
       fourthRank.x = 81;
       fourthRank.y = 200;
       fourthRank.font = '20px Impact';
       scene.addChild(fourthRank);
 
       var fifthRank = new Label('5');
-      fifthRank.color = '#ffffff';
+      fifthRank.color = '#000000';
       fifthRank.x = 81;
       fifthRank.y = 235;
       fifthRank.font = '20px Impact';
       scene.addChild(fifthRank);
 
       //スコア
-      var scoreHead = new Label('score');
-      scoreHead.color = '#ffffff';
+      var scoreHead = new Label('SCORE');
+      scoreHead.color = '#000000';
       scoreHead.x = 160;
       scoreHead.y = 50;
       scoreHead.font = '30px Impact';
       scene.addChild(scoreHead);
 
       var firstScore = new Label(localStorage.getItem('rank1'));
-      firstScore.color = "#ffffff";
-      firstScore.x = 170;
-      firstScore.y = 95;
-      firstScore.font = '20px Impact';
+      firstScore.color = "#ff0000";
+      firstScore.x = 160;
+      firstScore.y = 88;
+      firstScore.font = '30px Impact';
       scene.addChild(firstScore);
 
       var secondScore = new Label(localStorage.getItem('rank2'));
-      secondScore.color = '#ffffff';
-      secondScore.x = 170;
-      secondScore.y = 130;
-      secondScore.font = '20px Impact';
+      secondScore.color = '#000000';
+      secondScore.x = 160;
+      secondScore.y = 125;
+      secondScore.font = '30px Impact';
       scene.addChild(secondScore);
 
       var thirdScore = new Label(localStorage.getItem('rank3'));
-      thirdScore.color = '#ffffff';
-      thirdScore.x = 170;
-      thirdScore.y = 165;
-      thirdScore.font = '20px Impact';
+      thirdScore.color = '#000000';
+      thirdScore.x = 160;
+      thirdScore.y = 163;
+      thirdScore.font = '25px Impact';
       scene.addChild(thirdScore);
 
       var fourthScore = new Label(localStorage.getItem('rank4'));
-      fourthScore.color = '#ffffff';
-      fourthScore.x = 170;
+      fourthScore.color = '#000000';
+      fourthScore.x = 160;
       fourthScore.y = 200;
       fourthScore.font = '20px Impact';
       scene.addChild(fourthScore);
 
       var fifthScore = new Label(localStorage.getItem('rank5'));
-      fifthScore.color = '#ffffff';
-      fifthScore.x = 170;
+      fifthScore.color = '#000000';
+      fifthScore.x = 160;
       fifthScore.y = 235;
       fifthScore.font = '20px Impact';
       scene.addChild(fifthScore);
 
       // リトライラベル(ボタン)設定
       var playLabel = new Label('GAME PLAY');                  // ラベルを作る
-      playLabel.color = '#ffffff';                                 // 文字を白色に
+      playLabel.color = '#000000';                                 // 文字を白色に
       playLabel.x = 10;                                          // 横位置調整
       playLabel.y = 285;                                        // 縦位置調整
       playLabel.font = '25px Impact';                       // 20pxのゴシック体にする
@@ -966,7 +1001,7 @@ window.onload = function() {
 
       //タイトルに戻るラベル(ボタン)設定
       var exit = new Label("EXIT");
-      exit.color = '#ffffff';
+      exit.color = '#000000';
       exit.x = 265;
       exit.y = 285;
       exit.font = '25px Impact';
@@ -983,9 +1018,65 @@ window.onload = function() {
       })
       return scene;
     };
+    /*
+    説明シーン
+    */
+    var createDescriptionScene = function() {
+      var scene = new Scene();                        // 新しいシーンを作る
+
+      // 背景画像を設定
+      var bgImage = new Sprite(320, 320);
+      bgImage.image = game_.assets['./img/setumei.png'];
+      bgImage.x = 0;
+      bgImage.y = 0;
+      scene.addChild(bgImage);
+
+
+
+      // リトライラベル(ボタン)設定
+      var playLabel = new Label('GAME PLAY');                  // ラベルを作る
+      playLabel.color = '#000000';                                 // 文字を黒色に
+      playLabel.x = 10;                                          // 横位置調整
+      playLabel.y = 285;                                        // 縦位置調整
+      playLabel.font = '25px Impact';                       // 20pxのゴシック体にする
+      scene.addChild(playLabel);                                // シーンに追加
+
+      //タイトルに戻るラベル(ボタン)設定
+      var exit = new Label("EXIT");
+      exit.color = '#000000';
+      exit.x = 265;
+      exit.y = 285;
+      exit.font = '25px Impact';
+      scene.addChild(exit);
+
+      // リトライラベルにタッチイベントを設定
+      playLabel.addEventListener(Event.TOUCH_START, function(e) {
+        game_.replaceScene(createGameScene());
+      });
+
+      //タイトルに戻るタッチイベント設定
+      exit.addEventListener(Event.TOUCH_START,function(e){
+        game_.replaceScene(createStartScene());
+      })
+
+
+      // 説明シーンを返す
+      return scene;
+    };
   game_.replaceScene(createStartScene());  // ゲームの_rootSceneをスタートシーンに置き換える
-}
-
-
+  }
   game_.start(); // ゲームをスタートさせます
 };
+
+function previewCenter ( game ){
+    var left = ( window.innerWidth - ( game.width * game.scale )) / 2;
+    var top=( window.innerHeight - ( game.height * game.scale ));
+    $('#enchant-stage').css({
+      "position":"absolute",
+      "left":left+"px",
+      "top":top+"px",
+    });
+    game._pageX = left;
+    game._pageY = top;
+    document.body.style.background = '#9ad9ea';
+}
