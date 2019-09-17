@@ -77,7 +77,7 @@ window.onload = function() {
     };
     /*--ゲームシーン--*/
     var createGameScene = function() {
-      var GROUND_LINE = 250; // 地平線の高さ
+      var GROUND_LINE = 260; // 地平線の高さ
       var SCROLL_SPEED = 10;//スクロールの速さ
       var scene = new Scene();
       var scroll = 0;// スクロール量を記録する変数
@@ -252,7 +252,7 @@ window.onload = function() {
       var Kure = new Sprite(32, 32);
       Kure.image = game_.assets['./img/chara2.png'];
       Kure.x = 80;
-      Kure.y = GROUND_LINE - Kure.height;
+      Kure.y = 228;
       scene.addChild(Kure);
 
       /*-----くれの当たり判定-----*/
@@ -270,6 +270,7 @@ window.onload = function() {
       var miniFlag = 0;
       var hurFlag = 0;
       var birFlag = 0;
+      var rocFlag = 0;
 
       /*-----シーンに毎フレームイベントを設定-----*/
       scene.addEventListener(Event.ENTER_FRAME, function() {
@@ -320,7 +321,7 @@ window.onload = function() {
             }
           }
         }else if(scroll >= 1000 && scroll < 2000){
-          if(scroll % 40 === 0 && scroll % 80 != 0 && scroll % 120 != 0 && scroll % 160 != 0){
+          if(scroll % 35 === 0 && scroll % 105 != 0 && scroll % 140 != 0){
             switch(miniFlag){
               case 0:
                 miniHurdleA.x = 320;
@@ -336,7 +337,7 @@ window.onload = function() {
                 break;
             }
           }
-          if((scroll % 80 === 0 || scroll % 120 === 0) && scroll % 160 != 0){
+          if(scroll % 105 === 0 && scroll % 140 != 0){
             switch(hurFlag){
               case 0:
                 hurdleA.x = 320;
@@ -352,59 +353,36 @@ window.onload = function() {
                 break;
             }
           }
-          if(scroll % 160 === 0){
+          if(scroll % 140 === 0){
             if(birFlag === 0){
               bird1.x = 320;
-              birFlag++;
+              birFlag = 1;
             }else{
               bird2.x = 320;
-              birFlag--;
+              birFlag = 0;
             }
           }
-        }else if(scroll >= 2000 && scroll < 3000){
-          if(scroll % 30 === 0 && scroll % 90 != 0 && scroll % 120 != 0){
-            switch(miniFlag){
+        }else if(scroll >= 2011 && scroll < 3000){
+          if(scroll % 30 == 0){
+            rocFlag = Math.floor(Math.random()*4);
+            if(rocFlag == 3){
+              rocFlag = 2;
+            }
+            console.log(rocFlag);
+            switch(rocFlag){
               case 0:
-                miniHurdleA.x = 320;
-                miniFlag++;
+                rocket1.x = 320;
                 break;
               case 1:
-                miniHurdleB.x = 320;
-                miniFlag++;
+                rocket2.x = 320;
                 break;
               case 2:
-                miniHurdleC.x = 320;
-                miniFlag = 0;
+                rocket3.x = 320;
                 break;
-            }
-          }
-          if(scroll % 90 === 0 && scroll % 120 != 0){
-            switch(hurFlag){
-              case 0:
-                hurdleA.x = 320;
-                hurFlag++;
-                break;
-              case 1:
-                hurdleB.x = 320;
-                hurFlag++;
-                break;
-              case 2:
-                hurdleC.x = 320;
-                hurFlag = 0;
-                break;
-            }
-          }
-          if(scroll % 120 === 0){
-            if(birFlag === 0){
-              bird1.x = 320;
-              birFlag++;
-            }else{
-              bird2.x = 320;
-              birFlag--;
             }
           }
         }else if(scroll >= 3000 && scroll < 4000){
-          if(scroll % 30 === 0 && scroll % 90 != 0 && scroll % 120 != 0){
+          if(scroll % 35 === 0 && scroll % 105 != 0 && scroll % 140 != 0){
             switch(hurFlag){
               case 0:
                 hurdleA.x = 320;
@@ -420,30 +398,36 @@ window.onload = function() {
                 break;
             }
           }
-          if(scroll % 90 === 0 && scroll % 120 != 0){
+          if(scroll % 105 === 0 && scroll % 140 != 0){
             if(birFlag === 0){
               bird1.x = 320;
-              birFlag++;
+              birFlag = 1;
             }else{
               bird2.x = 320;
-              birFlag--;
+              birFlag = 0;
             }
           }
-          if(scroll % 120 === 0){
+          if(scroll % 140 === 0){
             bird3.x = 320;
           }
         }else if(scroll >= 4000 && scroll < 5000){
-          if(scroll % 30 === 0 && scroll % 60 != 0 && scroll % 90 != 0){
-            rocket3.x = 320
-          }
-          if(scroll % 60 === 0 && scroll % 90 != 0){
-            rocket1.x = 320;
-          }
-          if(scroll % 90 === 0){
-            rocket2.x = 320;
+          if(scroll % 30 == 0){
+            rocFlag = Math.floor(Math.random()*3);
+            console.log(rocFlag);
+            switch(rocFlag){
+              case 0:
+                rocket1.x = 320;
+                break;
+              case 1:
+                rocket2.x = 320;
+                break;
+              case 2:
+                rocket3.x = 320;
+                break;
+            }
           }
         }else if(scroll >= 5000 && scroll < 6000){
-          if(scroll % 20 === 0 && scroll % 100 != 0 && scroll % 120 != 0){
+          if(scroll % 30 === 0 && scroll % 60 != 0 && scroll % 75 != 0 && scroll % 105 != 0){
             switch(hurFlag){
               case 0:
                 hurdleA.x = 320;
@@ -459,49 +443,39 @@ window.onload = function() {
                 break;
             }
           }
-          if(scroll % 100 === 0 && scroll % 120 != 0){
+          if(scroll % 60 === 0 && scroll % 75 != 0 && scroll % 105 != 0){
             if(birFlag === 0){
               bird1.x = 320;
-              birFlag++;
+              birFlag = 1;
             }else{
               bird2.x = 320;
-              birFlag--;
+              birFlag = 0;
             }
           }
-          if(scroll % 120 === 0){
+          if(scroll % 75 === 0 && scroll % 105 != 0){
             bird3.x = 320;
+          }
+          if(scroll % 105 === 0){
+            bird4.x = 320;
           }
         }else if(scroll >= 6000 && scroll < 7000){
-          if(scroll % 20 === 0 && scroll % 100 != 0 && scroll % 60 != 0){
-            switch(hurFlag){
+          if(scroll % 30 == 0){
+            rocFlag = Math.floor(Math.random()*3);
+            console.log(rocFlag);
+            switch(rocFlag){
               case 0:
-                hurdleA.x = 320;
-                hurFlag++;
+                rocket1.x = 320;
                 break;
               case 1:
-                hurdleB.x = 320;
-                hurFlag++;
+                rocket2.x = 320;
                 break;
               case 2:
-                hurdleC.x = 320;
-                hurFlag = 0;
+                rocket3.x = 320;
                 break;
             }
-          }
-          if(scroll % 100 === 0 && scroll % 60 != 0){
-            if(birFlag === 0){
-              bird1.x = 320;
-              birFlag++;
-            }else{
-              bird2.x = 320;
-              birFlag--;
-            }
-          }
-          if(scroll % 60 === 0){
-            bird3.x = 320;
           }
         }else if(scroll >= 7000 && scroll < 8000){
-          if(scroll % 20 === 0 && scroll % 100 != 0 && scroll % 40 != 0){
+          if(scroll % 25 === 0 && scroll % 75){
             switch(hurFlag){
               case 0:
                 hurdleA.x = 320;
@@ -517,30 +491,38 @@ window.onload = function() {
                 break;
             }
           }
-          if(scroll % 100 === 0){
-            if(birFlag === 0){
-              bird1.x = 320;
-              birFlag++;
-            }else{
-              bird2.x = 320;
-              birFlag--;
+          if(scroll % 75 === 0){
+            birFlag = Math.floor(Math.random()*3)
+            switch (birFlag) {
+              case 0:
+                bird1.x = 320;
+                break;
+              case 1:
+                bird3.x = 320;
+                break;
+              case 2:
+                bird4.x = 320;
+                break;
             }
           }
-          if(scroll % 40 === 0){
-            bird3.x = 320;
-          }
         }else if(scroll >= 8000 && scroll < 9000){
-          if(scroll % 20 === 0 && scroll % 40 != 0 && scroll % 60 != 0){
-            rocket3.x = 320
-          }
-          if(scroll % 40 === 0 && scroll % 60 != 0){
-            rocket1.x = 320;
-          }
-          if(scroll % 60 === 0){
-            rocket2.x = 320;
+          if(scroll % 30 == 0){
+            rocFlag = Math.floor(Math.random()*3);
+            console.log(rocFlag);
+            switch(rocFlag){
+              case 0:
+                rocket1.x = 320;
+                break;
+              case 1:
+                rocket2.x = 320;
+                break;
+              case 2:
+                rocket3.x = 320;
+                break;
+            }
           }
         }else if(scroll >= 9000 && scroll < 10000){
-          if(scroll % 20 === 0 && scroll % 40 != 0 && scroll % 60 != 0 && scroll % 100 != 0){
+          if(scroll % 25 === 0 && scroll % 50){
             if(hurFlag === 0){
               hurdleA.x = 320;
               hurFlag++;
@@ -552,35 +534,33 @@ window.onload = function() {
               hurFlag = 0;
             }
           }
-          if(scroll % 40 === 0 && scroll % 60 != 0 && scroll % 100 != 0){
-            bird4.x = 320
-          }
-          if(scroll % 60 === 0){
-            bird3.x = 320;
-          }
-          if(scroll % 100 === 0){
-            if(birFlag === 0){
-              bird1.x = 320;
-              birFlag++;
-            }else{
-              bird2.x = 320;
-              birFlag--;
+          if(scroll % 50){
+            switch (birFlag) {
+              case 0:
+                bird1.x = 320;
+                break;
+              case 1:
+                bird3.x = 320;
+                break;
+              case 2:
+                bird4.x = 320;
+                break;
             }
           }
         }else if(scroll >= 10000){
-          if(scroll % 20 === 0 && scroll % 40 != 0 && scroll % 60 != 0 && scroll % 100 != 0){
-            bird4.x = 320;
-          }
-          if(scroll % 40 === 0 && scroll % 60 != 0 && scroll % 100 != 0){
-            bird3.x = 320;
-          }
-          if(scroll % 60 === 0){
-            if(birFlag === 0){
-              bird1.x = 320;
-              birFlag++;
-            }else{
-              bird2.x = 320;
-              birFlag--;
+          if(scroll % 30 == 0){
+            rocFlag = Math.floor(Math.random()*3);
+            console.log(rocFlag);
+            switch(rocFlag){
+              case 0:
+                rocket1.x = 320;
+                break;
+              case 1:
+                rocket2.x = 320;
+                break;
+              case 2:
+                rocket3.x = 320;
+                break;
             }
           }
         }
@@ -592,14 +572,12 @@ window.onload = function() {
             KureDead();
           }
         }
-
         if (hurdleB.x > -hurdleB.width) {
           hurdleB.x -= SCROLL_SPEED;
           if (hurdleB.intersect(Kure_hit)) {
             KureDead();
           }
         }
-
         if (hurdleC.x > -hurdleC.width) {
           hurdleC.x -= SCROLL_SPEED;
           if (hurdleC.intersect(Kure_hit)) {
@@ -614,14 +592,12 @@ window.onload = function() {
             KureDead();
           }
         }
-
         if (miniHurdleB.x > -miniHurdleB.width) {
           miniHurdleB.x -= SCROLL_SPEED;
           if (miniHurdleB.intersect(Kure_hit)) {
             KureDead();
           }
         }
-
         if (miniHurdleC.x > -miniHurdleC.width) {
           miniHurdleC.x -= SCROLL_SPEED;
           if (miniHurdleC.intersect(Kure_hit)) {
@@ -631,7 +607,7 @@ window.onload = function() {
 
         /*-----鳥のスクロールと、接触の判定-----*/
         if (bird1.x > -bird1.width) {
-          bird1.x -= SCROLL_SPEED * 1.3;     // 鳥を1.3倍速でスクロール
+          bird1.x -= SCROLL_SPEED * 1.1;     // 鳥を1.3倍速でスクロール
           //鳥のアニメーションの設定
           if(scroll % 10 === 0){
             if (bird1.frame > 0) {
@@ -644,9 +620,8 @@ window.onload = function() {
             KureDead();
           }
         }
-
         if (bird2.x > -bird2.width) {
-          bird2.x -= SCROLL_SPEED * 1.3;
+          bird2.x -= SCROLL_SPEED * 1.1;
           if(scroll % 10 === 0){
             if (bird2.frame > 0) {
               bird2.frame = 0;
@@ -658,9 +633,8 @@ window.onload = function() {
             KureDead();
           }
         }
-
         if (bird3.x > -bird3.width) {
-          bird3.x -= SCROLL_SPEED * 1.3;
+          bird3.x -= SCROLL_SPEED * 1.1;
           if(scroll % 10 === 0){
             if (bird3.frame > 0) {
               bird3.frame = 0;
@@ -672,9 +646,8 @@ window.onload = function() {
             KureDead();
           }
         }
-
         if (bird4.x > -bird4.width) {
-          bird4.x -= SCROLL_SPEED * 1.;
+          bird4.x -= SCROLL_SPEED * 1.1;
           if(scroll % 10 === 0){
             if (bird4.frame > 0) {
               bird4.frame = 0;
@@ -689,7 +662,7 @@ window.onload = function() {
 
         /*-----ロケットのスクロールと、接触の判定-----*/
         if (rocket1.x > -rocket1.width) {
-          rocket1.x -= SCROLL_SPEED * 2;
+          rocket1.x -= SCROLL_SPEED * 1.3;
           if(scroll % 1 === 0){
             if (rocket1.frame > 0) {
               rocket1.frame = 0;
@@ -701,9 +674,8 @@ window.onload = function() {
             KureDead();
           }
         }
-
         if (rocket2.x > -rocket2.width) {
-          rocket2.x -= SCROLL_SPEED * 2;
+          rocket2.x -= SCROLL_SPEED * 1.3;
           if(scroll % 1 === 0){
             if (rocket2.frame > 0) {
               rocket2.frame = 0;
@@ -715,9 +687,8 @@ window.onload = function() {
             KureDead();
           }
         }
-
         if (rocket3.x > -rocket3.width) {
-          rocket3.x -= SCROLL_SPEED * 2;
+          rocket3.x -= SCROLL_SPEED * 1.3;
           if(scroll % 1 === 0){
             if (rocket3.frame > 0) {
               rocket3.frame = 0;
@@ -793,18 +764,20 @@ window.onload = function() {
         if(road3.x <= -480){
           road3.x = road2.x + 320;
         }
-
       });
+
 
       /*-----キーを押したときにくれをジャンプさせる関数を呼ぶ-----*/
       document.onkeypress=kureJump;
 
       /*-----くれをジャンプさせる関数-----*/
-      function kureJump(e){
+      function kureJump(){
         // くれをジャンプさせる
-        Kure.tl.moveBy(0, -90, 6, enchant.Easing.CUBIC_EASEOUT) // 6フレームかけて現在の位置から上に80px移動
-        .moveBy(0, 90, 8, enchant.Easing.CUBIC_EASEIN);   // 6フレームかけて現在の位置から下に80px移動
-      }
+        if(Math.ceil(Kure.y) == GROUND_LINE - Kure.height){
+          Kure.tl.moveBy(0, -80, 6, enchant.Easing.CUBIC_EASEOUT);//6フレームかけて現在の位置から縦-80px,横0px移動
+          Kure.tl.moveBy(0, 80, 8, enchant.Easing.CUBIC_EASEIN);//8フレームかけて現在の位置から縦80px,横0px移動
+        }
+      };
       return scene;
     };
 
